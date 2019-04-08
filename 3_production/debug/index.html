@@ -1,0 +1,1131 @@
+
+
+
+
+<!doctype html>
+<html lang="ja" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="クリップボードへコピー">
+      
+        <meta name="lang:clipboard.copied" content="コピーしました">
+      
+        <meta name="lang:search.language" content="ja">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="何も見つかりませんでした">
+      
+        <meta name="lang:search.result.one" content="1件見つかりました">
+      
+        <meta name="lang:search.result.other" content="#件見つかりました">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-　、。，．]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.1.1">
+    
+    
+      
+        <title>デバッグ - 入門 Docker</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.3020aac5.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.224b79ff.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#3f51b5">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.01ccdecf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+      <link rel="stylesheet" href="../../assets/custom.css">
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-136697307-1", "y-ohgi.com")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="入門 Docker" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              入門 Docker
+            </span>
+            <span class="md-header-nav__topic">
+              デバッグ
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="検索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            検索キーワードを入力してください
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="入門 Docker" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    入門 Docker
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      はじめに
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        はじめに
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../1_introduction/docker/" title="Dockerとは" class="md-nav__link">
+      Dockerとは
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../1_introduction/vm-docker/" title="VMとDocker" class="md-nav__link">
+      VMとDocker
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../1_introduction/hello-docker/" title="Hello Docker !" class="md-nav__link">
+      Hello Docker !
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      コンポーネント
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        コンポーネント
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../2_component/image/" title="image" class="md-nav__link">
+      image
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../2_component/dockerfile/" title="dockerfile" class="md-nav__link">
+      dockerfile
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../2_component/container/" title="container" class="md-nav__link">
+      container
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../2_component/network/" title="network" class="md-nav__link">
+      network
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../2_component/volume/" title="volume" class="md-nav__link">
+      volume
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+    
+    <label class="md-nav__link" for="nav-4">
+      プロダクションでの活用
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        プロダクションでの活用
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../design/" title="設計" class="md-nav__link">
+      設計
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../security/" title="セキュリティ" class="md-nav__link">
+      セキュリティ
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        デバッグ
+      </label>
+    
+    <a href="./" title="デバッグ" class="md-nav__link md-nav__link--active">
+      デバッグ
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目次</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" title="準備" class="md-nav__link">
+    準備
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" title="現在の状態を確認する" class="md-nav__link">
+    現在の状態を確認する
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" title="コンテナのライフサイクル" class="md-nav__link">
+    コンテナのライフサイクル
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" title="短命なコンテナ" class="md-nav__link">
+    短命なコンテナ
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" title="長命なコンテナ" class="md-nav__link">
+    長命なコンテナ
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" title="コンポーネントの削除" class="md-nav__link">
+    コンポーネントの削除
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" title="コンテナの中に入る" class="md-nav__link">
+    コンテナの中に入る
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" title="ログを確認する" class="md-nav__link">
+    ログを確認する
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" title="停止したコンテナの中に入る" class="md-nav__link">
+    停止したコンテナの中に入る
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../image/" title="イメージの仕組み" class="md-nav__link">
+      イメージの仕組み
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../dockerfile/" title="Dockerfileのベストプラクティス" class="md-nav__link">
+      Dockerfileのベストプラクティス
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../orchestration/" title="オーケストレーションツール" class="md-nav__link">
+      オーケストレーションツール
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../docker-compose/" title="docker-compose" class="md-nav__link">
+      docker-compose
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../introduction/" title="プロダクションへの導入" class="md-nav__link">
+      プロダクションへの導入
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Tips
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Tips
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../4_tips/tools/" title="tools" class="md-nav__link">
+      tools
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../4_tips/docker-compose/" title="docker-compose" class="md-nav__link">
+      docker-compose
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目次</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" title="準備" class="md-nav__link">
+    準備
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" title="現在の状態を確認する" class="md-nav__link">
+    現在の状態を確認する
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" title="コンテナのライフサイクル" class="md-nav__link">
+    コンテナのライフサイクル
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" title="短命なコンテナ" class="md-nav__link">
+    短命なコンテナ
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" title="長命なコンテナ" class="md-nav__link">
+    長命なコンテナ
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" title="コンポーネントの削除" class="md-nav__link">
+    コンポーネントの削除
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" title="コンテナの中に入る" class="md-nav__link">
+    コンテナの中に入る
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" title="ログを確認する" class="md-nav__link">
+    ログを確認する
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" title="停止したコンテナの中に入る" class="md-nav__link">
+    停止したコンテナの中に入る
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>デバッグ</h1>
+                
+                <p>Dockerの動作確認方法について学びます。</p>
+<h2 id="_1">準備<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>今まで使用してきたインスタンスではいくつかのコマンドを打ってきました。そのためImage/Container/Volume/Networkが残っています。<br />
+削除して使用するのもありなのですが、ここからは新しいインスタンスを起動して新しい環境で作業を行いましょう。</p>
+<p><img alt="instance" src="../../1_introduction/imgs/add-new-instance.png" /></p>
+<h3 id="_2">現在の状態を確認する<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>まず、新しい環境で以下コマンドと結果と同じ、Dockerのコンポーネントが何もない状態であることを確認してください。<br />
+"NETWORK ID" は環境毎に異なるため、3つ存在することが確認できれば問題ありません。</p>
+<div class="codehilite"><pre><span></span>$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+$ docker container ls -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+$ docker volume ls
+DRIVER              VOLUME NAME
+$ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+57b365c4c259        bridge              bridge              local
+0de6477937b5        host                host                local
+fcb28176b5e7        none                null                local
+</pre></div>
+
+
+<h2 id="_3">コンテナのライフサイクル<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p><img alt="lifecycle" src="../../2_component/imgs/lifecycle.png" /></p>
+<p>どんなソフトウェアでも言えることですが、ライフサイクルを意識することは重要です。<br />
+ここではコンテナの状態の確認方法を学んでいきましょう。</p>
+<h3 id="_4">短命なコンテナ<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p><code>docker run</code> でpythonで"hoge"と出力するコンテナを起動してみます。  </p>
+<div class="codehilite"><pre><span></span>$ docker run python python -c &#39;print(&quot;hoge&quot;)&#39;
+Unable to find image &#39;python:latest&#39; locally
+latest: Pulling from library/python
+e79bb959ec00: Pull complete
+d4b7902036fe: Pull complete
+1b2a72d4e030: Pull complete
+d54db43011fd: Pull complete
+69d473365bb3: Pull complete
+7dc3a6a0e509: Pull complete
+68cd774d0852: Pull complete
+2ef86095a118: Pull complete
+42c091edeef0: Pull complete
+Digest: sha256:7e6c00cc553fdce06c1bcfcbf34c73a0f3623a8fc9ce88c8fb91671f2cbc0dab
+Status: Downloaded newer image for python:latest
+hoge
+</pre></div>
+
+
+<p>Dockerイメージをpullした後に、引数に渡した <code>python -c 'print("hoge")'</code> を実行してくれました。  </p>
+<p><code>docker container ls -a</code> を実行することで、現在のホスト上の全てのコンテナを見ることが可能です。  </p>
+<div class="codehilite"><pre><span></span>$ docker container ls -a
+CONTAINER ID        IMAGE               COMMAND                   CREATED              STATUS                          PORTS               NAMES
+910343e33060        python              &quot;python -c print(\&quot;ho…&quot;   About a minute ago   Exited (0) About a minute ago                       determined_visvesvaraya
+</pre></div>
+
+
+<p>"STATUS"の列を確認すると "Exited (0) About a minute ago" とあります。<br />
+「終了コードが0 (正常終了) で、既に終了している」ことがわかりました。</p>
+<p>もう一度同じコマンドを実行してみましょう。</p>
+<div class="codehilite"><pre><span></span>$ docker run python python -c &#39;print(&quot;fuga&quot;)&#39;
+fuga
+</pre></div>
+
+
+<p>今度はDockerイメージのpullをスキップしてコマンドが実行されました。<br />
+既にPullしたコンテナがある場合はそのイメージを使用するためです。  </p>
+<p>コンテナの状態を確認してみましょう。</p>
+<div class="codehilite"><pre><span></span>$ docker container ls -a
+CONTAINER ID        IMAGE               COMMAND                   CREATED             STATUS                      PORTS               NAMES
+0d99a0e9e15a        python              &quot;python -c print(\&quot;fu…&quot;   5 seconds ago       Exited (0) 4 seconds ago                        nervous_laland
+910343e33060        python              &quot;python -c print(\&quot;ho…&quot;   14 minutes ago      Exited (0) 14 minutes ago                       determined_visvesvaraya
+</pre></div>
+
+
+<p>コンテナが2つに増えています。<br />
+これはコンテナは実行される度に <strong>新しい環境</strong> が立ち上がるためです。</p>
+<p>終了したコンテナをもう一度起動することも可能です。  </p>
+<div class="codehilite"><pre><span></span>$ docker container ls -a
+CONTAINER ID        IMAGE               COMMAND                   CREATED             STATUS                      PORTS               NAMES
+0d99a0e9e15a        python              &quot;python -c print(\&quot;fu…&quot;   5 seconds ago       Exited (0) 4 seconds ago                        nervous_laland
+910343e33060        python              &quot;python -c print(\&quot;ho…&quot;   14 minutes ago      Exited (0) 14 minutes ago                       determined_visvesvaraya
+$ docker start -a 910343e33060
+hoge
+$ docekr start -a 0d99a0e9e15a
+fuga
+</pre></div>
+
+
+<h3 id="_5">長命なコンテナ<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>次に、Webサーバのような基本的に起動し続ける長いライフタイムのコンテナがどのような状態になるのか確認しましょう。  </p>
+<p>例のごとくnginxを起動します。  </p>
+<div class="codehilite"><pre><span></span>$ docker run -P -d nginx
+491f97ab763b2e3fca78211350f45f5bd0f7311155a8214980d3c804f5f2a44f
+</pre></div>
+
+
+<p>コンテナの状態を確認しましょう。  </p>
+<div class="codehilite"><pre><span></span>$ docker container ls -a
+CONTAINER ID        IMAGE               COMMAND                   CREATED             STATUS                      PORTS                   NAMES
+491f97ab763b        nginx               &quot;nginx -g &#39;daemon of…&quot;    23 seconds ago      Up 21 seconds               0.0.0.0:32769-&gt;80/tcp   silly_hellman
+0d99a0e9e15a        python              &quot;python -c print(\&quot;fu…&quot;   39 minutes ago      Exited (0) 39 minutes ago                           nervous_lalande
+910343e33060        python              &quot;python -c print(\&quot;ho…&quot;   About an hour ago   Exited (0) 35 minutes ago                           determined_visvesvaraya
+</pre></div>
+
+
+<p>nginxのコンテナが"STATUS" が "Up 21 seconds" となっており、実行されていることがわかります</p>
+<div class="admonition 実行中のコンテナのみ表示させる">
+<p class="admonition-title">実行中のコンテナのみ表示させる</p>
+<p>実行中のコンテナだけを表示したい場合は <code>-a</code> オプションを付けないで実行することでフィルタすることができます。<br />
+<code>$ docker container ls</code></p>
+</div>
+<p>もう一つnginxコンテナを起動してみましょう。  </p>
+<div class="codehilite"><pre><span></span>$ docker run -P -d nginx
+dbd0565d0ca200224125f9d995186f0e6a49e14be20498ae0204a667f033d7ce
+$ docker container ls
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                   NAMES
+dbd0565d0ca2        nginx               &quot;nginx -g &#39;daemon of…&quot;   4 seconds ago       Up 3 seconds        0.0.0.0:32770-&gt;80/tcp   pedantic_mclaren
+491f97ab763b        nginx               &quot;nginx -g &#39;daemon of…&quot;   3 minutes ago       Up 2 minutes        0.0.0.0:32769-&gt;80/tcp   silly_hellman
+</pre></div>
+
+
+<p>コンテナが2つ起動起動されています。<br />
+Play with Docker上でもポートが2つ開放されているはずです。</p>
+<p>試しに起動中のコンテナを1つ停止させてみましょう。<br />
+<code>docker stop</code> の引数にコンテナIDを渡すことで停止させることができます。</p>
+<div class="codehilite"><pre><span></span>$ docker stop 491f97ab763b
+491f97ab763b
+$ docker container ls -a
+CONTAINER ID        IMAGE               COMMAND                   CREATED             STATUS                      PORTS                   NAMES
+dbd0565d0ca2        nginx               &quot;nginx -g &#39;daemon of…&quot;    2 minutes ago       Up 2 minutes                0.0.0.0:32770-&gt;80/tcp   pedantic_mclaren
+491f97ab763b        nginx               &quot;nginx -g &#39;daemon of…&quot;    5 minutes ago       Exited (0) 5 seconds ago                            silly_hellman
+0d99a0e9e15a        python              &quot;python -c print(\&quot;fu…&quot;   44 minutes ago      Exited (0) 44 minutes ago                           nervous_lalande
+910343e33060        python              &quot;python -c print(\&quot;ho…&quot;   About an hour ago   Exited (0) 41 minutes ago                           determined_visvesvaraya
+</pre></div>
+
+
+<p>"STATUS" が "Exited" になり、停止されました。<br />
+Play with Docker上では開放されているポートが1つになったはずです。</p>
+<h3 id="_6">コンポーネントの削除<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>最後に起動したコンテナとイメージを削除しましょう。  </p>
+<p>コンテナの停止</p>
+<div class="codehilite"><pre><span></span>$ docker stop $(docker container ls -q) 
+</pre></div>
+
+
+<p>コンテナの削除</p>
+<div class="codehilite"><pre><span></span>$ docker rm $(docker container ls -aq)
+</pre></div>
+
+
+<p>イメージの削除</p>
+<div class="codehilite"><pre><span></span>$ docker rmi $(docker images -q)
+</pre></div>
+
+
+<p>削除されていることの確認</p>
+<div class="codehilite"><pre><span></span>$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+$ docker container ls -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+</pre></div>
+
+
+<h2 id="_7">コンテナの中に入る<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p>起動したコンテナの中に入ることも可能です。  </p>
+<p>試しに先程起動したnginxの中に入ってみましょう。<br />
+<code>docker exec</code> コマンドに起動したコンテナのIDを渡すことで入ることが可能です。  </p>
+<p>コンテナ内にbashで入ってnginxファイルの存在を確認してみましょう  </p>
+<div class="codehilite"><pre><span></span>$ docker exec -it 85a6b023ba49 bash
+root@85a6b023ba49:/# ls /usr/share/nginx/html/
+50x.html  index.html
+</pre></div>
+
+
+<p>まずはいくつかのコマンドのインストールから行いましょう。</p>
+<div class="codehilite"><pre><span></span>root@85a6b023ba49:/# apt-get update
+root@85a6b023ba49:/# apt-get install -y curl procps
+</pre></div>
+
+
+<p>現在起動しているコンテナ内のプロセスを確認してみます。<br />
+nginxが起動していることが分かると思います。</p>
+<div class="codehilite"><pre><span></span>root@85a6b023ba49:/# ps -ae
+   PID TTY          TIME CMD
+     1 ?        00:00:00 nginx
+     6 ?        00:00:00 nginx
+    28 pts/0    00:00:00 bash
+  3716 pts/0    00:00:00 ps
+</pre></div>
+
+
+<p>実際nginxが起動しているか、 <code>localhost:80</code> へアクセスしてみましょう。  </p>
+<div class="codehilite"><pre><span></span>root@85a6b023ba49:/# curl localhost:80
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Welcome to nginx!&lt;/title&gt;
+&lt;style&gt;
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
+&lt;p&gt;If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.&lt;/p&gt;
+
+&lt;p&gt;For online documentation and support please refer to
+&lt;a href=&quot;http://nginx.org/&quot;&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
+Commercial support is available at
+&lt;a href=&quot;http://nginx.com/&quot;&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Thank you for using nginx.&lt;/em&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre></div>
+
+
+<p>nginxが参照しているhtmlを更新し、Play with Docker で表示されているリンクからアクセスして実際に書き換えることができたか確認してみましょう。  </p>
+<div class="codehilite"><pre><span></span>root@85a6b023ba49:/# echo &quot;&lt;h1&gt;hello docker&lt;/h1&gt;&quot; &gt; /usr/share/nginx/html/index.html
+root@85a6b023ba49:/# cat /usr/share/nginx/html/index.html
+&lt;h1&gt;hello docker&lt;/h1&gt;
+root@85a6b023ba49:/# exit
+</pre></div>
+
+
+<p><img alt="nginx" src="../imgs/debug-exec.png" /></p>
+<h2 id="_8">ログを確認する<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>ログを確認するために、nginxをデーモンとして起動しましょう。</p>
+<div class="codehilite"><pre><span></span>$ docker run -P -d nginx
+Unable to find image &#39;nginx:latest&#39; locally
+latest: Pulling from library/nginx
+27833a3ba0a5: Pull complete
+e83729dd399a: Pull complete
+ebc6a67df66d: Pull complete
+Digest: sha256:c8a861b8a1eeef6d48955a6c6d5dff8e2580f13ff4d0f549e082e7c82a8617a2
+Status: Downloaded newer image for nginx:latest
+85a6b023ba49f8f29b1f35eeebbbd2f49811fe1420952538429cf71ea5a92436
+</pre></div>
+
+
+<p>何度か先程起動したnginxへアクセスを行った後、nginxコンテナのIDを指定することでログを確認することができます。</p>
+<div class="codehilite"><pre><span></span>$ docker logs 85a6b023ba49f8f29b1f35eeebbbd2f49811fe1420952538429cf71ea5a92436
+2019/03/30 18:53:31 [error] 6#6: *1 open() &quot;/usr/share/nginx/html/robots.txt&quot; failed (2: No such file or directory), client: 172.18.0.1, server: localhost, request: &quot;GET /robots.txt HTTP/1.1&quot;, host: &quot;ip172-18-0-55-bifrfpo6chi000dv93cg-32768.direct.labs.play-with-docker.com&quot;
+172.18.0.1 - - [30/Mar/2019:18:53:31 +0000] &quot;GET /robots.txt HTTP/1.1&quot; 404 556 &quot;-&quot; &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36&quot; &quot;-&quot;
+172.18.0.1 - - [30/Mar/2019:18:53:31 +0000] &quot;GET / HTTP/1.1&quot; 200 612 &quot;-&quot;&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36&quot; &quot;-&quot;
+172.18.0.1 - - [30/Mar/2019:18:53:31 +0000] &quot;GET /favicon.ico HTTP/1.1&quot; 404 556 &quot;http://ip172-18-0-55-bifrfpo6chi000dv93cg-32768.direct.labs.play-with-docker.com/&quot; &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36&quot; &quot;-&quot;
+2019/03/30 18:53:31 [error] 6#6: *2 open() &quot;/usr/share/nginx/html/favicon.ico&quot; failed (2: No such file or directory), client: 172.18.0.1, server:localhost, request: &quot;GET /favicon.ico HTTP/1.1&quot;, host: &quot;ip172-18-0-55-bifrfpo6chi000dv93cg-32768.direct.labs.play-with-docker.com&quot;, referrer: &quot;http://ip172-18-0-55-bifrfpo6chi000dv93cg-32768.direct.labs.play-with-docker.com/&quot;
+</pre></div>
+
+
+<p><code>docker logs</code> で表示されるログは起動したプロセスの <strong>標準出力と標準エラー</strong> です。<br />
+ファイルに吐き出されたログは <code>docker logs</code> コマンドでは基本的に閲覧することはできません。  </p>
+<h2 id="_9">停止したコンテナの中に入る<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>アプリケーションをコンテナで開発していると予期せぬタイミングでコンテナ(上で動かしているプロセス)が死んでしまうことが多々あります。<br />
+例えば、コンテナ上に書き込んだファイルはコンテナ内からしか見ることができませんが、アプリケーションによってはエラーが起きた際の情報をファイルへ書き込むこむようなものもあります。<br />
+そういったコンテナに最適化されていないアプリケーションは多く、トラブルシュートの際に停止したコンテナの中に入る必要があることがあるでしょう。<br />
+<code>docker start</code> を使用したいところですが、 <code>docker start</code> の場合起動時のコマンドが実行されてしまいます。<br />
+そのコマンドが原因で起動直後に落ちてしまう場合、 <code>docker start</code> が使用できません。</p>
+<p>ここではコンテナ上へディレクトリを作成し、そのディレクトリを確認する手順を紹介します。</p>
+<p><code>mkdir</code> でディレクトリを作成し、実行したコンテナが停止していることを確認する。</p>
+<div class="codehilite"><pre><span></span>$ docker run amazonlinux:2 mkdir /tmp/hoge
+Unable to find image &#39;amazonlinux:2&#39; locally
+2: Pulling from library/amazonlinux
+f64ae36417d7: Pull complete
+Digest: sha256:d4a4328d679534af47c7a765d62a9195eb27f9a95c03213fca0a18f95aa112cd
+Status: Downloaded newer image for amazonlinux:2
+$ docker container ls -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
+32eec81f3aaa        amazonlinux:2       &quot;mkdir hoge&quot;        3 minutes ago       Exited (0) 3 minutes ago                       angry_hypatia
+</pre></div>
+
+
+<p><code>docker commit</code> で停止したコンテナから <code>exited-container</code> という名前の新しいイメージを作成します。</p>
+<div class="codehilite"><pre><span></span>$ docker commit 32eec81f3aaa exited-container
+sha256:497ce4f6a88aef387a4c78864fb6f3c06e03d9458f69168f10500e1f643e8af6
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+exited-container    latest              497ce4f6a88a        2 minutes ago       162MB
+amazonlinux         2                   01da4f8f9748        4 weeks ago         162MB
+</pre></div>
+
+
+<p><code>exited-container</code> イメージを起動して、コンテナ内で作成したディレクトリが存在するか確認する。  </p>
+<div class="codehilite"><pre><span></span>$ docker run -it exited-container bash
+bash-4.2# ls /tmp/
+hoge
+</pre></div>
+
+
+<div class="admonition note">
+<p class="admonition-title">amazonlinux:2 イメージ</p>
+<p>"amazonlinux:2"はAmazonが開発したCentOS7ベースのAmazonLinux2というOSです。<br />
+AWSでEC2(VM)を使用する際に基本的に選択されるOSなのですが、Dockerイメージも配布されています。<br />
+Dockerイメージとしても配布されており、軽量で非常に優秀なため使用しました。</p>
+</div>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../security/" title="セキュリティ" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  前
+                </span>
+                セキュリティ
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../image/" title="イメージの仕組み" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  次
+                </span>
+                イメージの仕組み
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.dc02f8ce.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+                <script src="../../assets/javascripts/lunr/tinyseg.js"></script>
+              
+              
+                <script src="../../assets/javascripts/lunr/lunr.ja.js"></script>
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
+      
+        <script src="../../assets/custom.js"></script>
+      
+    
+  </body>
+</html>

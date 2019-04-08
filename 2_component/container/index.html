@@ -1,0 +1,825 @@
+
+
+
+
+<!doctype html>
+<html lang="ja" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="クリップボードへコピー">
+      
+        <meta name="lang:clipboard.copied" content="コピーしました">
+      
+        <meta name="lang:search.language" content="ja">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="何も見つかりませんでした">
+      
+        <meta name="lang:search.result.one" content="1件見つかりました">
+      
+        <meta name="lang:search.result.other" content="#件見つかりました">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-　、。，．]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.1.1">
+    
+    
+      
+        <title>container - 入門 Docker</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.3020aac5.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.224b79ff.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#3f51b5">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.01ccdecf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+      <link rel="stylesheet" href="../../assets/custom.css">
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-136697307-1", "y-ohgi.com")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#docker-container" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="入門 Docker" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              入門 Docker
+            </span>
+            <span class="md-header-nav__topic">
+              container
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="検索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            検索キーワードを入力してください
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="入門 Docker" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    入門 Docker
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      はじめに
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        はじめに
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../1_introduction/docker/" title="Dockerとは" class="md-nav__link">
+      Dockerとは
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../1_introduction/vm-docker/" title="VMとDocker" class="md-nav__link">
+      VMとDocker
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../1_introduction/hello-docker/" title="Hello Docker !" class="md-nav__link">
+      Hello Docker !
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      コンポーネント
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        コンポーネント
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../image/" title="image" class="md-nav__link">
+      image
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../dockerfile/" title="dockerfile" class="md-nav__link">
+      dockerfile
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        container
+      </label>
+    
+    <a href="./" title="container" class="md-nav__link md-nav__link--active">
+      container
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目次</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#docker-container" title="Docker Containerとは" class="md-nav__link">
+    Docker Containerとは
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" title="ライフサイクル" class="md-nav__link">
+    ライフサイクル
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" title="プロセスの隔離" class="md-nav__link">
+    プロセスの隔離
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" title="おまけ" class="md-nav__link">
+    おまけ
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../network/" title="network" class="md-nav__link">
+      network
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../volume/" title="volume" class="md-nav__link">
+      volume
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      プロダクションでの活用
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        プロダクションでの活用
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../3_production/design/" title="設計" class="md-nav__link">
+      設計
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../3_production/security/" title="セキュリティ" class="md-nav__link">
+      セキュリティ
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../3_production/debug/" title="デバッグ" class="md-nav__link">
+      デバッグ
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../3_production/image/" title="イメージの仕組み" class="md-nav__link">
+      イメージの仕組み
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../3_production/dockerfile/" title="Dockerfileのベストプラクティス" class="md-nav__link">
+      Dockerfileのベストプラクティス
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../3_production/orchestration/" title="オーケストレーションツール" class="md-nav__link">
+      オーケストレーションツール
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../3_production/docker-compose/" title="docker-compose" class="md-nav__link">
+      docker-compose
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../3_production/introduction/" title="プロダクションへの導入" class="md-nav__link">
+      プロダクションへの導入
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Tips
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Tips
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../4_tips/tools/" title="tools" class="md-nav__link">
+      tools
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../4_tips/docker-compose/" title="docker-compose" class="md-nav__link">
+      docker-compose
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目次</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#docker-container" title="Docker Containerとは" class="md-nav__link">
+    Docker Containerとは
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" title="ライフサイクル" class="md-nav__link">
+    ライフサイクル
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" title="プロセスの隔離" class="md-nav__link">
+    プロセスの隔離
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" title="おまけ" class="md-nav__link">
+    おまけ
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>container</h1>
+                
+                <h2 id="docker-container">Docker Containerとは<a class="headerlink" href="#docker-container" title="Permanent link">&para;</a></h2>
+<p><img alt="dockerfile" src="../imgs/dockerfile.png" />
+Docker Image がスナップショットだとしたらDocker Container はその <strong>「スナップショットから起動したプロセス」</strong> です。  </p>
+<p>より具体的にいうと <code>docker run</code> を実行するとDocker Image をもとにしてDocker Containerが作成され、隔離された環境が作成されます。<br />
+Docker Container は Docker Imageを元にして作成され、リソースの許す限り立ち上げることができます。</p>
+<p>意識する点として、Docker Container は1つのコマンドをフォアグラウンドで動かすように設計されていることです。<br />
+Docker Containerは1つのコマンドを隔離された環境で実行し、そのコマンドが終了するまでその環境を起動し続けます。</p>
+<h2 id="_1">ライフサイクル<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p><img alt="lifecycle" src="../imgs/lifecycle.png" /></p>
+<p>Docker Container は大きく5つの状態を遷移します。  </p>
+<ol>
+<li><code>Image</code><ul>
+<li>指定したDocker Image からDocker Containerを起動します。</li>
+</ul>
+</li>
+<li><code>RUNNING</code><ul>
+<li>Docker Containerが起動した状態です。</li>
+<li>Dockerfileの <code>CMD</code> もしくは <code>ENTRYPOINT</code> で指定したコマンドがフォアグラウンドで動いている間がRUNNINGの状態です。</li>
+<li>例えば <code>docker run -P nginx</code> のようにnginxを起動した場合、nginxが起動してアクセスを待ち受けてる間はRUNNINGの状態となります</li>
+</ul>
+</li>
+<li><code>STOPPED</code><ul>
+<li>起動したContainerが終了した状態です。</li>
+<li>正常終了・異常終了、どのような形であっても終了したContainerはSTOPPEDへ遷移します。</li>
+</ul>
+</li>
+<li><code>PAUSED</code><ul>
+<li>Containerが停止した状態です。</li>
+<li>ユーザーが <code>docker pause &lt;CONTAINER ID&gt;</code> を実行すると、現在の状態を保持して一時停止します。</li>
+<li><code>docker unpause &lt;CONTAINER ID&gt;</code> で一時停止したコンテナIDを指定することで再開することが可能です。</li>
+<li>ユーザーが明示的に指定しない限りこの状態へは遷移しません。</li>
+</ul>
+</li>
+<li><code>DELETED</code><ul>
+<li>Docker Container は明示的に削除を行わない限り停止した状態で残り続けます。</li>
+<li><code>docker rm &lt;CONTAINER ID&gt;</code> で明示的に削除するとDELETEDの状態へ遷移し、削除されます。</li>
+</ul>
+</li>
+</ol>
+<h2 id="_2">プロセスの隔離<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p><img alt="process" src="../imgs/process.png" /></p>
+<p>コンテナ内のプロセスはホストマシンや他のコンテナと隔離されて実行されます。<br />
+上記の図のようにホストマシンのDockerで作成されたコンテナは新しい環境を作成し、 <code>CMD</code> (もしくは <code>ENTRYPOINT</code> )で定義されたプロセスは <code>PID 1</code> になります。</p>
+<p>ためしに <code>ps</code> コマンドを実行するDockerを起動し、その環境の最初のプロセスとして起動していることを確認します。</p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> docker run ubuntu ps
+<span class="go">  PID TTY          TIME CMD</span>
+<span class="go">      1 ?        00:00:00 ps</span>
+</pre></div>
+
+
+<p>ホストからコンテナがどう見えるかも確認してみましょう。<br />
+準備としてプロセスの関係を見やすくするために <code>pstree</code> コマンドをインストールします。</p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> apk add --no-cache pstree
+</pre></div>
+
+
+<p>nginxのDockerコンテナをデーモンとして起動して、 <code>pstree</code> で確認してみましょう。</p>
+<div class="codehilite"><pre><span></span><span class="gp">$</span> docker run -d nginx
+<span class="go">Unable to find image &#39;nginx:latest&#39; locally</span>
+<span class="go">latest: Pulling from library/nginx</span>
+<span class="go">27833a3ba0a5: Pull complete</span>
+<span class="go">e83729dd399a: Pull complete</span>
+<span class="go">ebc6a67df66d: Pull complete</span>
+<span class="go">Digest: sha256:c8a861b8a1eeef6d48955a6c6d5dff8e2580f13ff4d0f549e082e7c82a8617a2</span>
+<span class="go">Status: Downloaded newer image for nginx:latest</span>
+<span class="go">eef4217efa74c65b36b7c80012eeaf0a9a8928717f5602a641dc20ddc91daf10</span>
+<span class="gp">$</span> pstree
+<span class="go">-+= 00001 root /bin/sh -c cat /etc/hosts &gt;/etc/hosts.bak &amp;&amp;     sed &#39;s/^::1.*//&#39; /etc/hosts.bak &gt; /</span>
+<span class="go"> |--- 00033 root /usr/sbin/sshd -o PermitRootLogin=yes -o PrintMotd=no</span>
+<span class="go"> |-|- 00009 root script -q -c /bin/bash -l /dev/null</span>
+<span class="go"> | \-+= 00010 root /bin/bash -l</span>
+<span class="go"> |   \--= 02850 root pstree</span>
+<span class="go"> \-|- 00008 root dockerd</span>
+<span class="go">   \-+= 00038 root containerd --config /var/run/docker/containerd/containerd.toml --log-level debug</span>
+<span class="go">     \-+= 02629 root containerd-shim -namespace moby -workdir /var/lib/docker/containerd/daemon/io.</span>
+<span class="go">       \-+= 02647 root nginx: master process nginx -g daemon off;</span>
+<span class="go">         \--- 02686 #101 nginx: worker process</span>
+</pre></div>
+
+
+<h2 id="_3">おまけ<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>$ docker run ubuntu echo hoge</code> のような一瞬だけ起動するコマンドだとどのように見えるでしょうか</li>
+<li><code>$ docker run -d nginx</code> を複数起動するとどのように見えるでしょうか</li>
+</ul>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../dockerfile/" title="dockerfile" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  前
+                </span>
+                dockerfile
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../network/" title="network" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  次
+                </span>
+                network
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.dc02f8ce.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+                <script src="../../assets/javascripts/lunr/tinyseg.js"></script>
+              
+              
+                <script src="../../assets/javascripts/lunr/lunr.ja.js"></script>
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
+      
+        <script src="../../assets/custom.js"></script>
+      
+    
+  </body>
+</html>
